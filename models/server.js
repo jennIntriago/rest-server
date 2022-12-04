@@ -6,6 +6,8 @@ class Server {
     this.app = express();
     // disparar el puerto
     this.port = process.env.PORT;
+    // Buena practica para indicar que rutas son
+    this.usuariosPath = "/api/usuarios";
 
     // Middlewares
     this.middlewares();
@@ -22,32 +24,8 @@ class Server {
 
   //Metodo para manejar las rutas
   routes() {
-    this.app.get("/api", (req, res) => {
-      res.json({
-        msg: "get API",
-      });
-    });
-
-    //
-    this.app.put("/api", (req, res) => {
-      res.json({
-        msg: "put API",
-      });
-    });
-
-    //
-    this.app.post("/api", (req, res) => {
-      res.status(201).json({
-        msg: "post API",
-      });
-    });
-
-    //
-    this.app.delete("/api", (req, res) => {
-      res.json({
-        msg: "delete API",
-      });
-    });
+    // Aplicar middleware condicional
+    this.app.use(this.usuariosPath, require("../routes/usuarios"));
   }
 
   //   Configuracion de puerto

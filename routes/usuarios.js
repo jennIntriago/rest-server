@@ -11,8 +11,8 @@ const {
 const router = Router();
 router.get("/", usuariosGet);
 
-//
-router.put("/", usuariosPut);
+//forma de definir endpoints con argumentos
+router.put("/:id", usuariosPut);
 
 //
 router.post("/", usuariosPost);

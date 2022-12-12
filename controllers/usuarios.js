@@ -2,17 +2,18 @@ const { response, request } = require("express");
 const bcryptjs = require("bcryptjs");
 const Usuario = require("../models/usuario");
 
-const usuariosGet = (req = request, res = response) => {
+const usuariosGet = async (req = request, res = response) => {
   //extraer parametros enviados por ruta
-  const { q, nombre = "NOT NAME", apikey, page = 1, limit } = req.query;
+  // const { q, nombre = "NOT NAME", apikey, page = 1, limit } = req.query;
+
+  const { limite = 5, desde = 0 } = req.query;
+  // obtener todos los usuarios
+  const usuarios = await Usuario.find()
+    .skip(Number(desde))
+    .limit(Number(limite));
 
   res.json({
-    msg: "get API - controlador",
-    q,
-    nombre,
-    apikey,
-    page,
-    limit,
+    usuarios,
   });
 };
 
@@ -37,7 +38,7 @@ const usuariosPost = async (req, res = response) => {
 const usuariosPut = async (req, res = response) => {
   const { id } = req.params;
   // extraer lo que no se necesita y hacer spread de lo demás
-  const { password, google, correo, ...resto } = req.body;
+  const { _id, password, google, correo, ...resto } = req.body;
 
   // TODO Validar contra la base de datos
 
@@ -50,11 +51,7 @@ const usuariosPut = async (req, res = response) => {
   // busca por id y actualizalo
   const usuario = await Usuario.findByIdAndUpdate(id, resto);
 
-  res.json({
-    msg: "put API - controlador",
-    id,
-    usuario,
-  });
+  res.json(usuario);
 };
 
 const usuariosPatch = (req, res = response) => {

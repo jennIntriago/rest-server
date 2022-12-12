@@ -4,7 +4,7 @@ const dbConnection = async () => {
   try {
     //esta linea es necesaria para suprimir una advertencia de versionamiento
     await mongoose.set("strictQuery", true);
-    await mongoose.connect(process.env.MONGODB_ATLAS, {
+    await mongoose.connect(process.env.MONGODB_CNN, {
       //   useNewUrlParse: true,
       //   useUnifiedTopology: true,
       //   useCreateIndex: true,

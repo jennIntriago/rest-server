@@ -37,5 +37,12 @@ const UsuarioSchema = Schema({
   },
 });
 
+// Para reescribir este metodo, se debe usar una función normal para acceder al objeto actual [this]
+UsuarioSchema.methods.toJSON = function () {
+  // Sacamos el objeto la version y password y mantenemos los demas
+  const { __v, password, ...usuario } = this.toObject();
+  return usuario;
+};
+
 // usamos el model y le pasamos el nombre del modelo y mongoose ubica el mismo nombre a la colección en plural
 module.exports = model("Usuario", UsuarioSchema);

@@ -9,7 +9,7 @@ const {
   usuariosPatch,
 } = require("../controllers/usuarios");
 const { validarCampos } = require("../middlewares/validar-campos");
-const { esRoleValido } = require("../helpers/db-validators");
+const { esRoleValido, emailExiste } = require("../helpers/db-validators");
 const router = Router();
 router.get("/", usuariosGet);
 
@@ -25,6 +25,7 @@ router.post(
       min: 6,
     }),
     check("correo", "El correo no es válido").isEmail(),
+    check("correo").custom(emailExiste),
     // check("rol", "No es un rol permitido").isIn(["ADMIN_ROLE", "USER_ROLE"]),
     check("rol").custom(esRoleValido),
     validarCampos,

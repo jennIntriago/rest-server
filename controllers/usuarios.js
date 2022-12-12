@@ -22,14 +22,6 @@ const usuariosPost = async (req, res = response) => {
   // Crear instancia de usuario
   const usuario = new Usuario({ nombre, correo, password, rol });
 
-  // verificar si el correo existe
-  const existeEmail = await Usuario.findOne({ correo });
-  if (existeEmail) {
-    //El return en este caso significa que hasta aqui llega la ejecución
-    return res.status(400).json({
-      msg: "El correo ya está registrado",
-    });
-  }
   //Encriptar la contraseña
   const salt = bcryptjs.genSaltSync();
   usuario.password = bcryptjs.hashSync(password, salt);
@@ -42,11 +34,26 @@ const usuariosPost = async (req, res = response) => {
   });
 };
 
-const usuariosPut = (req, res = response) => {
+const usuariosPut = async (req, res = response) => {
   const { id } = req.params;
+  // extraer lo que no se necesita y hacer spread de lo demás
+  const { password, google, correo, ...resto } = req.body;
+
+  // TODO Validar contra la base de datos
+
+  // para actualizar contraseña
+  if (password) {
+    const salt = bcryptjs.genSaltSync();
+    resto.password = bcryptjs.hashSync(password, salt);
+  }
+
+  // busca por id y actualizalo
+  const usuario = await Usuario.findByIdAndUpdate(id, resto);
+
   res.json({
     msg: "put API - controlador",
     id,
+    usuario,
   });
 };
 

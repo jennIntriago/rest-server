@@ -40,7 +40,8 @@ const UsuarioSchema = Schema({
 // Para reescribir este metodo, se debe usar una función normal para acceder al objeto actual [this]
 UsuarioSchema.methods.toJSON = function () {
   // Sacamos el objeto la version y password y mantenemos los demas
-  const { __v, password, ...usuario } = this.toObject();
+  const { __v, password, _id, ...usuario } = this.toObject();
+  usuario.uid = _id;
   return usuario;
 };
 

@@ -10,6 +10,9 @@ class Server {
     // Buena practica para indicar que rutas son
     this.usuariosPath = "/api/usuarios";
 
+    //autenticcion por jwt
+    this.authPath = "/api/auth";
+
     // Conectar a base de datos
     this.conectarDB();
 
@@ -37,6 +40,7 @@ class Server {
   //Metodo para manejar las rutas
   routes() {
     // Aplicar middleware condicional
+    this.app.use(this.authPath, require("../routes/auth"));
     this.app.use(this.usuariosPath, require("../routes/usuarios"));
   }
 
